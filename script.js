@@ -1,12 +1,12 @@
 let allCards=[], filtered=[], index=0, flipped=false, known=new Set(JSON.parse(localStorage.getItem('knownCards')||'[]'));
 let quizCurrent=null, score=0, total=0;
 const $=id=>document.getElementById(id);
-const els={cardsCount:$('cardsCount'),globalProgress:$('globalProgress'),progressText:$('progressText'),search:$('search'),categoryFilter:$('categoryFilter'),flashcard:$('flashcard'),cardCategory:$('cardCategory'),cardQuestion:$('cardQuestion'),cardHint:$('cardHint'),cardAnswer:$('cardAnswer'),cardCounter:$('cardCounter'),cardsList:$('cardsList'),quizCategory:$('quizCategory'),quizQuestion:$('quizQuestion'),answers:$('answers'),quizScore:$('quizScore'),feedback:$('feedback')};
+const els={cardsCount:$('cardsCount'),globalProgress:$('globalProgress'),progressText:$('progressText'),search:$('search'),categoryFilter:$('categoryFilter'),flashcard:$('flashcard'),cardCategory:$('cardCategory'),cardQuestion:$('cardQuestion'),cardHint:$('cardHint'),cardAnswer:$('cardAnswer'),cardCounter:$('cardCounter'),cardsList:$('cardsList'),quizCategory:$('quizCategory'),quizCounter:$('quizCounter'),quizQuestion:$('quizQuestion'),answers:$('answers'),quizScore:$('quizScore'),feedback:$('feedback')};
 async function init(){
   allCards=await fetch('cards.json').then(r=>r.json()); filtered=[...allCards];
   els.cardsCount.textContent=allCards.length;
   [...new Set(allCards.map(c=>c.category))].forEach(cat=>{const o=document.createElement('option');o.value=cat;o.textContent=cat;els.categoryFilter.appendChild(o)});
-  bind(); applyFilters(); updateProgress();
+  bind(); applyFilters(); updateProgress(); updateQuizCounter();
 }
 function bind(){
  document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>switchView(b.dataset.view,b));
@@ -27,6 +27,7 @@ function move(d){if(!filtered.length)return; index=(index+d+filtered.length)%fil
 function saveKnown(){localStorage.setItem('knownCards',JSON.stringify([...known]))}
 function updateProgress(){const p=allCards.length?Math.round(known.size/allCards.length*100):0; els.globalProgress.style.width=p+'%'; els.progressText.textContent=`Przerobiono ${p}% (${known.size}/${allCards.length})`}
 function renderList(){els.cardsList.innerHTML=''; filtered.forEach(c=>{const div=document.createElement('article'); div.className='list-card'; div.innerHTML=`<span class="pill">${c.category}</span><h3>${c.question}</h3><p>${c.answer}</p>`; els.cardsList.appendChild(div)})}
-function newQuiz(){els.feedback.textContent=''; quizCurrent=allCards[Math.floor(Math.random()*allCards.length)]; els.quizCategory.textContent=quizCurrent.category; els.quizQuestion.textContent=quizCurrent.question; const wrong=allCards.filter(c=>c.id!==quizCurrent.id).sort(()=>Math.random()-.5).slice(0,3).map(c=>c.answer); const options=[quizCurrent.answer,...wrong].sort(()=>Math.random()-.5); els.answers.innerHTML=''; options.forEach(opt=>{const b=document.createElement('button'); b.className='answer'; b.textContent=opt; b.onclick=()=>checkAnswer(b,opt); els.answers.appendChild(b)});}
-function checkAnswer(btn,opt){if(!quizCurrent)return; total++; const ok=opt===quizCurrent.answer; if(ok)score++; [...els.answers.children].forEach(b=>{b.disabled=true; if(b.textContent===quizCurrent.answer)b.classList.add('correct')}); if(!ok)btn.classList.add('wrong'); els.feedback.textContent=ok?'Dobrze!':'Źle — zobacz poprawną odpowiedź na zielono.'; els.quizScore.textContent=`Wynik: ${score}/${total}`;}
+function updateQuizCounter(){if(!els.quizCounter)return; const current=Math.min(total+(quizCurrent?1:0), allCards.length); els.quizCounter.textContent=`Pytanie ${current} / ${allCards.length}`;}
+function newQuiz(){els.feedback.textContent=''; quizCurrent=allCards[Math.floor(Math.random()*allCards.length)]; updateQuizCounter(); els.quizCategory.textContent=quizCurrent.category; els.quizQuestion.textContent=quizCurrent.question; const wrong=allCards.filter(c=>c.id!==quizCurrent.id).sort(()=>Math.random()-.5).slice(0,3).map(c=>c.answer); const options=[quizCurrent.answer,...wrong].sort(()=>Math.random()-.5); els.answers.innerHTML=''; options.forEach(opt=>{const b=document.createElement('button'); b.className='answer'; b.textContent=opt; b.onclick=()=>checkAnswer(b,opt); els.answers.appendChild(b)});}
+function checkAnswer(btn,opt){if(!quizCurrent)return; total++; const ok=opt===quizCurrent.answer; if(ok)score++; [...els.answers.children].forEach(b=>{b.disabled=true; if(b.textContent===quizCurrent.answer)b.classList.add('correct')}); if(!ok)btn.classList.add('wrong'); els.feedback.textContent=ok?'Dobrze!':'Źle — zobacz poprawną odpowiedź na zielono.'; els.quizScore.textContent=`Wynik: ${score}/${total}`; updateQuizCounter();}
 init();
