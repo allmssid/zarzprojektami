@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fiszki i quiz — Zarządzanie Projektami Informatycznymi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Nauka do wykładu</p>
+      <h1>Zarządzanie Projektami Informatycznymi</h1>
+      <p class="lead">Interaktywne fiszki, quiz, losowanie pytań i szybka powtórka najważniejszych pojęć.</p>
+    </div>
+    <div class="hero-card">
+      <span id="cardsCount">0</span>
+      <small>fiszki do powtórki</small>
+      <div class="progress"><div id="globalProgress"></div></div>
+      <p id="progressText">Przerobiono 0%</p>
+    </div>
+  </header>
+
+  <main class="app">
+    <nav class="tabs" aria-label="Tryby nauki">
+      <button class="tab active" data-view="flashcards">Fiszki</button>
+      <button class="tab" data-view="quiz">Quiz</button>
+      <button class="tab" data-view="list">Baza pytań</button>
+    </nav>
+
+    <section class="toolbar">
+      <input id="search" type="search" placeholder="Szukaj pojęcia, np. Agile, ryzyko, CPM..." />
+      <select id="categoryFilter"><option value="all">Wszystkie działy</option></select>
+      <button id="shuffleBtn">Losuj</button>
+      <button id="resetBtn" class="ghost">Reset progresu</button>
+    </section>
+
+    <section id="flashcards" class="view active-view">
+      <div class="flashcard-wrap">
+        <article id="flashcard" class="flashcard" tabindex="0" aria-label="Kliknij, aby odwrócić fiszkę">
+          <div class="face front">
+            <p class="pill" id="cardCategory">Dział</p>
+            <h2 id="cardQuestion">Ładowanie...</h2>
+            <p class="hint" id="cardHint"></p>
+            <span class="tap">Kliknij, aby zobaczyć odpowiedź</span>
+          </div>
+          <div class="face back">
+            <p class="pill">Odpowiedź</p>
+            <h2 id="cardAnswer">...</h2>
+            <span class="tap">Kliknij, aby wrócić do pytania</span>
+          </div>
+        </article>
+      </div>
+      <div class="controls">
+        <button id="prevCard">← Poprzednia</button>
+        <button id="knowBtn" class="success">Umiem</button>
+        <button id="nextCard">Następna →</button>
+      </div>
+      <p class="counter" id="cardCounter"></p>
+    </section>
+
+    <section id="quiz" class="view">
+      <div class="quiz-panel">
+        <div class="quiz-head">
+          <p class="pill" id="quizCategory">Quiz</p>
+          <p id="quizScore">Wynik: 0/0</p>
+        </div>
+        <h2 id="quizQuestion">Kliknij start, żeby rozpocząć quiz.</h2>
+        <div id="answers" class="answers"></div>
+        <div class="controls">
+          <button id="startQuiz">Start / nowe pytanie</button>
+          <button id="explainBtn" class="ghost">Pokaż odpowiedź</button>
+        </div>
+        <p id="feedback" class="feedback"></p>
+      </div>
+    </section>
+
+    <section id="list" class="view">
+      <div id="cardsList" class="cards-list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Tip: spacja odwraca fiszkę, strzałki przełączają pytania.</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
