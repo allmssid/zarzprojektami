@@ -178,9 +178,20 @@ function renderList() {
 
 function resetQuizProgressView() {
   const totalQuestions = allCards.length || 0;
+  quizCurrent = null;
+  quizDeck = [];
+  quizIndex = -1;
+  score = 0;
+  answeredTotal = 0;
+
+  els.quizCategory.textContent = 'Quiz';
   els.quizCounter.textContent = `Pytanie 0 / ${totalQuestions}`;
   els.quizRemaining.textContent = `Zostało: ${totalQuestions}`;
   els.quizScore.textContent = 'Wynik: 0/0';
+  els.quizQuestion.textContent = 'Kliknij start, żeby rozpocząć quiz.';
+  els.answers.innerHTML = '';
+  els.feedback.textContent = '';
+  $('startQuiz').textContent = 'Start quizu';
   if (els.quizProgressBar) els.quizProgressBar.style.width = '0%';
 }
 
@@ -192,23 +203,41 @@ function updateQuizProgressView() {
 
   els.quizCounter.textContent = `Pytanie ${currentQuestion} / ${totalQuestions}`;
   els.quizRemaining.textContent = `Zostało: ${remaining}`;
+  els.quizScore.textContent = `Wynik: ${score}/${answeredTotal}`;
   if (els.quizProgressBar) els.quizProgressBar.style.width = percent + '%';
 }
 
-function newQuiz() {
-  els.feedback.textContent = '';
+function startQuizSession() {
+  quizDeck = [...allCards].sort(() => Math.random() - 0.5);
+  quizIndex = 0;
+  score = 0;
+  answeredTotal = 0;
+  quizCurrent = quizDeck[quizIndex];
+  renderQuizQuestion();
+}
 
-  if (!quizDeck.length || quizIndex >= quizDeck.length - 1) {
-    quizDeck = [...allCards].sort(() => Math.random() - 0.5);
-    quizIndex = -1;
-    score = 0;
-    answeredTotal = 0;
-    els.quizScore.textContent = 'Wynik: 0/0';
+function nextQuizQuestion() {
+  if (!quizDeck.length) {
+    startQuizSession();
+    return;
   }
 
-  quizIndex++;
+  if (quizIndex >= quizDeck.length - 1) {
+    finishQuiz();
+    return;
+  }
+
+  quizIndex += 1;
   quizCurrent = quizDeck[quizIndex];
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  if (!quizCurrent) return;
+
+  els.feedback.textContent = '';
   updateQuizProgressView();
+  $('startQuiz').textContent = 'Następne pytanie →';
 
   els.quizCategory.textContent = quizCurrent.category;
   els.quizQuestion.textContent = quizCurrent.question;
@@ -229,6 +258,30 @@ function newQuiz() {
     button.onclick = () => checkAnswer(button, option);
     els.answers.appendChild(button);
   });
+}
+
+function finishQuiz() {
+  quizCurrent = null;
+  els.quizCategory.textContent = 'Koniec quizu';
+  els.quizQuestion.textContent = `Quiz zakończony. Wynik: ${score}/${answeredTotal}.`;
+  els.answers.innerHTML = '';
+  els.feedback.textContent = 'Kliknij „Rozpocznij od nowa”, żeby wylosować nową kolejność pytań.';
+  $('startQuiz').textContent = 'Rozpocznij od nowa';
+  if (els.quizProgressBar) els.quizProgressBar.style.width = '100%';
+  const totalQuestions = quizDeck.length || allCards.length || 0;
+  els.quizCounter.textContent = `Pytanie ${totalQuestions} / ${totalQuestions}`;
+  els.quizRemaining.textContent = 'Zostało: 0';
+}
+
+function newQuiz() {
+  const buttonText = $('startQuiz').textContent.trim().toLowerCase();
+
+  if (!quizDeck.length || buttonText.includes('start') || buttonText.includes('od nowa')) {
+    startQuizSession();
+    return;
+  }
+
+  nextQuizQuestion();
 }
 
 function checkAnswer(button, option) {
