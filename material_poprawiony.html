@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zarządzanie Projektami Informatycznymi - Pełny Podręcznik</title>
+    <style>
+        /* --- ULEPSZONY CIEMNY MOTYW: WYRAŹNIEJSZY KONTRAST I ZOPTYMALIZOWANY WYDRUK --- */
+        :root{
+            --page-bg: #081226;
+            --container-bg: #072033;
+            --card-bg: rgba(255,255,255,0.02);
+            --text: #eaf6ff;
+            --text-dim: #94b9d3;
+            --muted: #b7d9ee;
+            --accent: #60a5fa;
+            --accent-2: #7dd3c7;
+            --accent-3: #fbbf24;
+            --border: rgba(255,255,255,0.08);
+            --note-bg: rgba(96,165,250,0.06);
+            --concept-bg: rgba(125, 211, 199, 0.05);
+            --warning-bg: rgba(251, 191, 36, 0.05);
+            --radius: 12px;
+        }
+
+        html,body{height:100%;}
+        body{
+            margin:0;
+            padding:28px;
+            background:linear-gradient(180deg,var(--page-bg),#071428 120%);
+            color:var(--text);
+            font-family: Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            font-size:17px;
+            line-height:1.7;
+        }
+
+        .container{
+            max-width:1150px;
+            margin:0 auto;
+            background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.005));
+            padding:50px 60px;
+            border-radius:var(--radius);
+            box-shadow:0 15px 40px rgba(2,6,23,0.8), inset 0 1px 0 rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.04);
+        }
+
+        h1{font-size:2.6rem; margin:0 0 10px; color:var(--accent); text-align:center; padding-bottom:15px; border-bottom:2px solid rgba(96,165,250,0.15); letter-spacing:0.5px}
+        .subtitle { text-align: center; color: var(--text-dim); font-size: 1.1rem; margin-bottom: 40px; }
+        
+        h2{color:var(--accent-2); font-size:1.7rem; margin-top:55px; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:10px}
+        h3{color:var(--accent); font-size:1.35rem; margin-top:35px; margin-bottom:12px; display:flex; align-items:center; gap:10px;}
+        h3::before { content: "■"; font-size:0.8em; color:var(--accent-3); }
+        h4{color:var(--accent-2); font-size:1.15rem; margin-top:25px; margin-bottom:10px}
+
+        p, li{color:var(--text); font-size:1.05rem; margin-bottom:16px; letter-spacing:0.2px}
+        ul,ol{margin-bottom:24px; padding-left:30px}
+        li{margin-bottom:10px;}
+        li::marker{color:var(--accent-2); font-weight:bold;}
+
+        /* Wyróżnienia ważnych pojęć */
+        strong{
+            color:var(--accent-3);
+            font-weight:700;
+            background:rgba(251,191,36,0.08);
+            padding:2px 6px;
+            border-radius:4px;
+        }
+        em{
+            color: #a7f3d0;
+            font-style: italic;
+        }
+
+        .part{margin-bottom:70px}
+
+        /* --- BLOKI INFORMACYJNE --- */
+        /* Note box (Dobre rady) */
+        .note-box{
+            background:var(--note-bg); border-left:4px solid var(--accent);
+            padding:20px 24px; margin:24px 0; border-radius:8px;
+            box-shadow:0 4px 15px rgba(3,8,20,0.4);
+        }
+        .note-box h4{margin:0 0 12px; color:var(--accent); font-size:1.1rem; display:flex; align-items:center; gap:8px;}
+        .note-box h4::before { content: "📌"; font-size: 1.2em; }
+        .note-box p:last-child, .note-box ul:last-child { margin-bottom: 0; }
+
+        /* Concept box (Tłumaczenie i wyjaśnienie na egzamin) */
+        .concept-box{
+            background:var(--concept-bg); border-left:4px solid var(--accent-2);
+            padding:20px 24px; margin:24px 0; border-radius:0 8px 8px 0;
+            border: 1px solid rgba(125, 211, 199, 0.1);
+        }
+        .concept-box h4{margin:0 0 12px; color:var(--accent-2); font-size:1.1rem; display:flex; align-items:center; gap:8px;}
+        .concept-box h4::before { content: "💡"; font-size: 1.2em; }
+        
+        /* Warning box (Problemy i zagrożenia) */
+        .warning-box {
+            background:var(--warning-bg); border-left:4px solid var(--accent-3);
+            padding:20px 24px; margin:24px 0; border-radius:8px;
+        }
+        .warning-box h4{margin:0 0 12px; color:var(--accent-3); font-size:1.1rem; display:flex; align-items:center; gap:8px;}
+        .warning-box h4::before { content: "⚠️"; font-size: 1.2em; }
+
+        /* Tabele */
+        table{width:100%; border-collapse:separate; border-spacing:0; margin:24px 0; font-size:1rem; background:transparent; border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.06); box-shadow:0 10px 30px rgba(2,6,23,0.55)}
+        thead th{padding:16px 20px; background:rgba(10,30,50,0.95); color:var(--text); font-weight:800; text-align:left; border-bottom:2px solid rgba(255,255,255,0.08)}
+        th, td{padding:14px 18px; vertical-align:top; color:var(--text)}
+        tbody tr{border-bottom:1px solid rgba(255,255,255,0.03)}
+        tbody tr:nth-child(odd){background:rgba(96,165,250,0.03)}
+        tbody tr:nth-child(even){background:rgba(125,211,199,0.02)}
+        tbody tr:hover{background:rgba(255,255,255,0.06)}
+
+        /* Formuły matematyczne i kod */
+        .formula{
+            display:block; text-align:center;
+            font-family: ui-monospace, 'Courier New', monospace;
+            background:rgba(0,0,0,0.25); padding:16px; border-radius:8px;
+            color:var(--accent-3); margin:20px 0; font-size:1.2rem; font-weight:bold;
+            border: 1px dashed rgba(251,191,36,0.3);
+            letter-spacing: 1px;
+        }
+        code {
+            font-family: ui-monospace, 'Courier New', monospace;
+            background: rgba(255,255,255,0.05);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--accent-2);
+        }
+
+        @media (max-width:760px){
+            body{padding:15px}
+            .container{padding:25px}
+            h1{font-size:1.8rem}
+            h2{font-size:1.3rem}
+        }
+
+        /* --- STYL DO DRUKU / PDF (JASNY, EKONOMICZNY, CZYTELNY) --- */
+        @media print{
+            :root {
+                --page-bg: #ffffff;
+                --container-bg: #ffffff;
+                --text: #0f172a;
+                --text-dim: #475569;
+                --accent: #2563eb; 
+                --accent-2: #0f766e;
+                --accent-3: #b45309;
+                --note-bg: #f8fafc;
+                --concept-bg: #f0fdfa;
+                --warning-bg: #fffbeb;
+            }
+            body { background: none; color: var(--text); padding: 0; font-size: 11pt; line-height: 1.5; }
+            .container { box-shadow: none; border: none; padding: 0; background: none; max-width: 100%; }
+            
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            
+            h1, h2, h3 { color: var(--accent); }
+            h2 { border-bottom: 2px solid #cbd5e1; margin-top: 30px; }
+            h3 { margin-top: 20px; }
+            h3::before { color: var(--accent); }
+            
+            .note-box { background: var(--note-bg); border-left: 4px solid var(--accent); border: 1px solid #e2e8f0; color: var(--text); box-shadow: none; }
+            .concept-box { background: var(--concept-bg); border-left: 4px solid var(--accent-2); border: 1px solid #ccfbf1; box-shadow: none;}
+            .warning-box { background: var(--warning-bg); border-left: 4px solid var(--accent-3); border: 1px solid #fef3c7; box-shadow: none;}
+            
+            strong { color: var(--accent-3); background: #fef3c7; border: 1px solid #fde68a; }
+            em { color: #166534; }
+            
+            table { border: 1px solid #cbd5e1; box-shadow: none; }
+            thead th { background: #f1f5f9; color: var(--text); border-bottom: 2px solid #94a3b8; }
+            th, td { color: var(--text); border-bottom: 1px solid #e2e8f0; }
+            tbody tr:nth-child(odd) { background: #ffffff; }
+            tbody tr:nth-child(even) { background: #f8fafc; }
+            
+            .formula { background: #f8fafc; color: #0f172a; border: 1px solid #94a3b8; }
+            code { color: #0f172a; border: 1px solid #cbd5e1; }
+            
+            /* Zapobieganie łamaniu elementów w połowie strony */
+            .part { page-break-before: always; margin-bottom: 0; }
+            .part:first-of-type { page-break-before: avoid; }
+            .note-box, .concept-box, .warning-box, table, tr, p, li, .formula { page-break-inside: avoid; }
+            h2, h3, h4 { page-break-after: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Zarządzanie Projektami Informatycznymi</h1>
+    <div class="subtitle">Pełny, rozbudowany podręcznik do nauki z wyjaśnieniami pojęć i mechanizmów<br>Wykłady 1 - 5 | dr inż. Jacek Piątkowski</div>
+
+    <section class="part">
+        <h2>Część 1: Wprowadzenie i Modele Rozwoju Oprogramowania</h2>
+
+        <h3>1. Czym jest zarządzanie projektem?</h3>
+        <p>Zarządzanie projektem to administrowanie serią chronologicznych (następujących po sobie) zadań. Zawsze prowadzi do osiągnięcia założonego z góry celu, którym najczęściej jest <strong>wytworzenie unikatowego produktu lub usługi</strong>.</p>
+        
+        <div class="concept-box">
+            <h4>Pojęcie Unikatowości i Projektu</h4>
+            <p>Działalność firmy dzieli się na operacyjną i projektową. Działalność operacyjna to np. codzienna praca taśmy produkcyjnej w fabryce aut. Projekt to przedsięwzięcie niestandardowe (np. zaprojektowanie zupełnie nowego modelu silnika). Wyjątkiem są firmy z branży IT, tzw. Software House'y, które żyją wyłącznie z tego, że cały czas realizują unikatowe, niestandardowe projekty na zlecenie różnych podmiotów.</p>
+        </div>
+
+        <p>Każdy poprawnie zrealizowany projekt musi spełniać tzw. "żelazny trójkąt". Musi dostarczyć produkt:</p>
+        <ol>
+            <li>O właściwych funkcjonalnościach (zgodny z wymaganiami),</li>
+            <li><strong>Na czas</strong> (zgodny z harmonogramem),</li>
+            <li><strong>Po ustalonych kosztach</strong> (mieszczący się w budżecie).</li>
+        </ol>
+
+        <div class="warning-box">
+            <h4>Dlaczego projekty informatyczne (IT) są tak specyficzne i trudne?</h4>
+            <p>Nie budujemy mostu z betonu, którego zasady fizyki są stałe. Świat IT jest zmienny. Główne wyzwania to:</p>
+            <ul>
+                <li><strong>Dynamiczne zmiany trendów, mody i oczekiwań:</strong> Zanim skończysz pisać dużą aplikację po roku, moda na jej interfejs może już minąć.</li>
+                <li><strong>Problemy ze zgodnością (kompatybilnością):</strong> Twój program musi działać i na najnowszych smartfonach, i na 5-letnich komputerach klientów, wykorzystując różny sprzęt i oprogramowanie.</li>
+                <li><strong>Eliminacja luk w zabezpieczeniach:</strong> Hakerzy i boty nie śpią. Oprogramowanie musi być non-stop łatane i weryfikowane pod kątem bezpieczeństwa.</li>
+                <li><strong>Różnorodne polityki firm:</strong> Zewnętrzny wykonawca musi dostosować się do zawiłych struktur prawnych i sieciowych korporacji (np. rygorystyczne przepisy RODO czy dostępy VPN).</li>
+            </ul>
+        </div>
+
+        <h3>2. Rola klienta w projekcie ("Klient nasz PAN")</h3>
+        <p>W relacji klient – wykonawca (fachowiec), to klient jest <strong>najważniejszą osobą</strong>. Projekt IT to usługa. Niezależnie od tego, jak wysoko twórca (programista) ocenia wybitność techniczną swojego oprogramowania, klient na końcu musi być z niego zadowolony. Jeśli klient jest niezadowolony, wszyscy ponoszą porażkę.</p>
+
+        <div class="note-box">
+            <h4>Dobre rady dla fachowca IT:</h4>
+            <ul>
+                <li><strong>Nie trać czasu na kłótnie:</strong> Jeśli odbiorcy nie podoba się np. przygotowany interfejs, najgorsze co możesz zrobić, to przekonywać go, że "kod pod spodem jest świetnie zoptymalizowany". Zamiast tego trzeba niezwłocznie zająć się wprowadzaniem zmian.</li>
+                <li><strong>Nie zgaduj:</strong> Realizacja projektu nie polega na domyślaniu się intencji klienta. Jeśli nie jesteś pewien czego oczekuje (a nawet gdy wydaje Ci się, że wiesz!) – zawsze to z nim konsultuj.</li>
+                <li><strong>Angażuj odbiorcę:</strong> Rzadko się zdarza, by klient na pierwszym spotkaniu potrafił wyartykułować wszystkie wymagania. Zrozum co mówi, dopytuj o opcje i angażuj go na każdym kroku prac, by mieć pewność, że zmierzacie w tym samym kierunku.</li>
+            </ul>
+        </div>
+
+        <h3>3. Modele (Metodyki) rozwoju oprogramowania</h3>
+        <p>Gdy wiemy, co mamy stworzyć, musimy wybrać odpowiedni "scenariusz" prowadzenia prac programistycznych.</p>
+
+        <h4>A. Model kaskadowy (Waterfall / Metoda wielkiego wybuchu)</h4>
+        <p>Klasyczny, sekwencyjny model zarządzania rodem z inżynierii budowlanej. Podzielony na sztywne fazy następujące jedna po drugiej. Każdy etap musi zostać ostatecznie zakończony, zanim zacznie się następny.</p>
+        <ul>
+            <li><strong>Chronologia faz:</strong> #1 Analiza wymagań ➝ #2 Projektowanie systemu ➝ #3 Implementacja (Pisanie kodu) ➝ #4 Testowanie ➝ #5 Wdrożenie gotowego produktu ➝ #6 Utrzymanie.</li>
+            <li><strong>Cechy:</strong> Wymaga z góry precyzyjnie określonych wymagań i niezwykle dokładnej, opasłej dokumentacji początkowej.</li>
+            <li><strong>Kiedy stosować:</strong> Gdy wymagania nie zmienią się ani o centymetr (np. systemy dla rządu, banków, aplikacje oparte na twardych ustawach prawnych).</li>
+        </ul>
+        <div class="concept-box">
+            <h4>Zalety i "Wielki Wybuch" (Wady)</h4>
+            <p><strong>Zalety:</strong> Pełna kontrola nad budżetem, świetna dokumentacja, łatwość zarządzania "na papierze".<br>
+            <strong>Wady:</strong> To tzw. <em>Metoda Wielkiego Wybuchu</em>. Twórcy nie pokazują klientowi oprogramowania w trakcie tworzenia. Po roku pracy klient otrzymuje gotowy produkt i... następuje "wybuch" niezadowolenia, bo wyobrażał sobie to inaczej. Zmiany w wymaganiach po wystartowaniu kodowania są tu ekstremalnie trudne i bardzo drogie. Problemy w logice łapie się dopiero w 4 fazie (testowania).</p>
+        </div>
+
+        <h4>B. Model zwinny (Agile / Metoda iteracyjna)</h4>
+        <p>Stworzony jako odpowiedź na wady kaskady. Projekt dzieli się na krótkie cykle (iteracje), potocznie zwane <strong>Sprintami</strong>. Cykl życia to mniejsze: <em>plan, design, develop, test, launch, review, deploy</em>.</p>
+        <ul>
+            <li><strong>Cechy:</strong> Sprint trwa zazwyczaj od 1 do 4 tygodni. Kładzie ogromny nacisk na ciągłą współpracę z klientem i adaptację do zmian. Po ukończeniu każdego większego fragmentu nie podejmuje się decyzji bez klienta.</li>
+            <li><strong>Złota zasada zwinności:</strong> Każdy sprint musi kończyć się dostarczeniem klientowi <em>działającej</em> części produktu. Zawsze lepiej jest dostarczyć doskonale działające 3 funkcje, niż zaprezentować całą aplikację z 10 funkcjami, w której nic poprawnie nie działa.</li>
+            <li><strong>Zalety:</strong> Klient cały czas widzi postępy. Ma prawo zmienić zdanie lub zmodyfikować wymagania na podstawie tego, co zobaczył. Zespół niezwykle szybko reaguje na nowości rynkowe.</li>
+            <li><strong>Wady:</strong> Wymaga kolosalnej samodyscypliny zespołu. Ponadto klient ciągle dodając funkcje, uniemożliwia dokładne wyliczenie z góry końcowego czasu i całkowitego budżetu. Dochodzą też stałe koszty częstych przygotowań do spotkań (konsultacji).</li>
+        </ul>
+
+        <h4>C. DevOps (Development + Operations)</h4>
+        <p>To specyficzny, nowoczesny model kultury organizacyjnej zacierający granicę między programistami (Twórcami kodu - <em>Dev</em>), a administratorami (Utrzymaniem infrastruktury i serwerów - <em>Ops</em>).</p>
+        <ul>
+            <li><strong>Główne założenia i cykl pracy:</strong> Automatyzacja całego życia kodu. Zespół na bieżąco współpracuje, co skraca czas od pomysłu do wdrożenia na serwer. Obejmuje fazy: Plan, Code, Build, Test (część Dev) oraz Release, Deploy, Operate, Monitor (część Ops).</li>
+            <li><strong>Procesy CI/CD:</strong> Klucz całego DevOps. 
+                <br><em>Continuous Integration</em> (Ciągła integracja) – narzędzia, które natychmiast automatycznie łączą kod pisany przez kilku programistów i odpalają skrypty testujące, czy nic nie zepsuli. 
+                <br><em>Continuous Deployment</em> (Ciągłe wdrażanie) – jeśli kod przejdzie automatyczne testy, sam wrzuca się na docelowy serwer i udostępnia użytkownikom, bez klikania "publikuj" przez administratora.</li>
+            <li><strong>Zalety:</strong> Drastyczne skrócenie czasu wdrożenia, bardzo wysoka jakość, eliminacja czynnika błędu ludzkiego (dzięki automatyzacji), ogromna skalowalność dzięki usługom chmurowym.</li>
+            <li><strong>Wady:</strong> Wysoki próg wejścia technologicznego, bardzo drogie wdrożenie samych procesów, wymusza trudną zmianę całej kultury firmy. Przerost formy nad treścią dla małych projektów.</li>
+            <li><strong>Przykłady narzędzi na poszczególnych etapach:</strong> 
+                <em>Plan & Code:</em> Jira, Asana, Trello, Git, GitHub, GitLab, Confluence.
+                <em>Build:</em> Docker, Kubernetes, Maven.
+                <em>CI/Testing:</em> Jenkins, Travis CI, Selenium, JUnit.
+                <em>Deploy/Release:</em> AWS (Amazon), MS Azure, Google Cloud, Ansible.
+                <em>Monitor/Operate:</em> Splunk, Zabbix, Datadog, Slack, OpsGenie.</li>
+        </ul>
+
+        <h4>D. MLOps (Machine Learning + Operations)</h4>
+        <p>Najnowsze rozszerzenie metodyki DevOps, przystosowane wyłącznie do specyfiki bardzo wymagających projektów opartych o Sztuczną Inteligencję (AI) i Uczenie Maszynowe (ML).</p>
+        <p>Powstaje na styku trzech specjalizacji:</p>
+        <ol>
+            <li><strong>Data Engineering (Inżynieria danych):</strong> Pozyskiwanie danych (np. miliony zdjęć z API), analiza, łączenie i <em>Preprocessing</em> (wstępna obróbka: wywalanie z bazy zdjęć uszkodzonych, formatowanie dat, usuwanie wartości skrajnie odstających i duplikatów). Wymaga skrupulatnego <em>Wersjonowania Danych</em>.</li>
+            <li><strong>Machine Learning:</strong> Dobór algorytmów i trenowanie. (Szczegóły w następnym bloku).</li>
+            <li><strong>DevOps / Operations:</strong> <em>Wdrożenie modelu</em> (wystawienie go przez API dla innych systemów), <em>Wersjonowanie potoków (Pipelines)</em> – każdy krok od zebrania danych, przez testy, po wdrożenie, to automatyczny łańcuch zdarzeń (np. Data_Collection ➝ Model_Test ➝ Deploy_v1).</li>
+        </ol>
+
+        <div class="concept-box">
+            <h4>Pojęcia MLOps – To warto umieć i rozumieć</h4>
+            <ul>
+                <li><strong>Inżynieria Cech (Feature Engineering):</strong> To proces analizy i decydowania, które parametry opisujące zjawisko są ważne dla sztucznej inteligencji. Przykładowo, jeśli AI wycenia dom, ważną cechą jest "Metraż", ale wymiarem nadmiarowym (do redukcji) będzie "Kolor ścian". Im czystsze cechy, tym sprawniejszy model.</li>
+                <li><strong>Strojenie hiperparametrów:</strong> Ręczna regulacja "mózgu" SI:
+                    <ul>
+                        <li><em>Liczba warstw i neuronów:</em> Złożoność układu nerwowego w kodzie.</li>
+                        <li><em>Współczynnik uczenia się (Learning Rate):</em> Wielkość "kroku", jakim AI reaguje na błąd. Jeśli jest za duży, algorytm ominie rozwiązanie. Jeśli za mały, trenowanie potrwa wieki.</li>
+                        <li><em>Batch Size:</em> Na ile mniejszych paczek dzielimy gigantyczny zbiór danych, aby pamięć RAM serwera nie wybuchła. Za duży psuje dokładność, za mały destabilizuje wyniki.</li>
+                        <li><em>Liczba epok:</em> Epoka to jeden pełny przebieg nauki przez absolutnie WSZYSTKIE dostępne dane treningowe.</li>
+                        <li><em>Typy aktywacji:</em> (np. funkcja ReLU, sigmoid) - decydują kiedy "neuron" w kodzie ma zapalić sygnał 1 a kiedy zgasnąć (0).</li>
+                    </ul>
+                </li>
+                <li><strong>Degradacja (Model Drift / Data Drift):</strong> Problem unikalny dla AI. W zwykłym kodzie funkcja 2+2=4 działa zawsze. Algorytm ML działa w oparciu o ludzkie zachowania, które z czasem ulegają zmianie (Data Drift). Skuteczność modeli spada z czasem (Model Drift), dlatego narzędzia (np. MLflow) ciągle sprawdzają, czy nie trzeba przeprowadzić automatycznego powtórnego trenowania (Retraining).</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="part">
+        <h2>Część 2: Gromadzenie Wymagań i Techniki Szacowania</h2>
+
+        <h3>1. Zanim napiszemy linijkę kodu – Gromadzenie Informacji</h3>
+        <p>Projekty IT rzadko ponoszą porażkę przez słabą technologię. Zazwyczaj "wykładają się" na etapie niezrozumienia biznesu i potrzeb. Rozwój oprogramowania nigdy nie polega na zgadywaniu intencji klienta. Należy zadać serię fundamentalnych pytań, tzw. pre-audyt projektu:</p>
+        <ul>
+            <li>Kim są i czego chcą <strong>udziałowcy (interesariusze)</strong>? To wszyscy ludzie mający wpływ na system: użytkownicy końcowi, prezesi płacący za system, nasz zespół i dostawcy.</li>
+            <li>Czy cel i absolutnie końcowy rezultat są jednoznacznie (ostro) zdefiniowane?</li>
+            <li>Jakie są narzucone odgórnie unormowania prawne (kwestie archiwizacji, zabezpieczenie zgodne z RODO, potrzebne certyfikaty).</li>
+            <li>Czy istnieje przewidziany termin wraz z ograniczeniami dostępności zasobów?</li>
+            <li><strong>Czy inicjator projektu w ogóle ma władzę?</strong> Czy ta osoba ma prawo zlecać prace, ma dostęp do finansów i pełne poparcie właściciela/zarządu firmy.</li>
+            <li><strong>Czy istnieje budżet?</strong> Jeśli pomysł na projekt brzmi "zróbmy to i może w przyszłości znajdziemy na to finansowanie" – to nie jest projekt. To jest wyłącznie <em>"lista życzeń"</em>.</li>
+        </ul>
+
+        <h4>Kontakt z udziałowcami</h4>
+        <p>Zbieranie wymagań może odbywać się m.in. poprzez: grupowe spotkania (często hałaśliwe i nieproduktywne), spotkania tylko z delegatami, dedykowane ankiety z formularzami lub metodę DELPHI.</p>
+
+        <div class="concept-box">
+            <h4>Metoda DELPHI</h4>
+            <p>To technika badawcza idealna dla zespołów interesariuszy, w których jest silna "alfa" (np. dominujący, głośny dyrektor), przy którym inni boją się odezwać. W metodzie DELPHI <strong>wszyscy uczestnicy wyrażają swoje oczekiwania i opinie całkowicie anonimowo</strong>. Zebrane komentarze są następnie udostępniane publicznie (jako bezimienna lista) całej grupie. Uczestnicy mogą wtedy zgłaszać zastrzeżenia lub zgodę co do samych faktów, bez oceniania tego "kto to powiedział".</p>
+        </div>
+
+        <h4>Karta Projektu (Project Charter)</h4>
+        <p>Bardzo ważny, formalny dokument otwierający. Formalizuje on atrybuty biznesowe. Określa wstępny harmonogram, udziałowców i ograniczenia. Najważniejsze: Karta Projektu stanowi "błogosławieństwo" dla Kierownika Projektu, określając kto jest Inwestorem, a kto menedżerem. Zawiera dane kontaktowe, przypisane zasoby ludzkie, infrastrukturę i uzasadnienie istnienia (jaki problem firmy rozwiązuje ten system).<br>
+        <strong>Uwaga:</strong> Karta Projektu (za wyjątkiem precyzyjnego cennika budżetowego) <strong>musi być publicznie dostępna</strong> do wglądu dla wszystkich zainteresowanych udziałowców.</p>
+
+        <h3>2. Czas i Szacowanie Oczekiwanej Pracy</h3>
+        <p>Ustalenie dokładnej daty dostarczenia produktu buduje w zespole poczucie odpowiedzialności, zamyka celowość projektu i gwarantuje zaangażowanie mocodawców. Każde drastyczne przekroczenie terminu wpływa skrajnie negatywnie na morale programistów.</p>
+
+        <div class="warning-box">
+            <h4>Prawo Parkinsona</h4>
+            <p>W projektach IT rządzi brutalne <strong>Prawo Parkinsona: "Praca zajmie dokładnie tyle czasu, ile przydzielono na jej wykonanie"</strong>. Co to oznacza w praktyce? Jeśli oszacujesz, że zadanie wymaga 3 dni pracy, ale dla bezpieczeństwa wyznaczysz programiście czas 5 dni, to on w jakiś magiczny sposób rozciągnie sobie pracę i odda kod dokładnie pod koniec 5-ego dnia. Przez dodawanie nadmiarowych czasów, budżet (zależny od roboczogodzin) rośnie do niebotycznych rozmiarów. Dlatego musimy szacować precyzyjnie.</p>
+        </div>
+
+        <h4>Krok po Kroku: Od Pomysłu do wyceny w dniach (7 Kroków)</h4>
+        
+        <p><strong>Krok 1:</strong> Burza mózgów, ankiety, metoda Delphi - klient zgłasza wolne pomysły.</p>
+        
+        <p><strong>Krok 2: Tworzenie "Opowieści użytkownika" (User Story).</strong><br>
+        To sposób na przełożenie wizji klienta na zadania. Jedno zadanie nie może mieć definicji technicznej. Pisze się je prostym językiem w 3 zdaniach. Używa się stałego szablonu:<br>
+        <code>"Jako [typ użytkownika np. menedżer] chcę [zamiar np. generować raport PDF], aby [korzyść np. móc wydrukować dane na zarząd]."</code></p>
+        
+        <p><strong>Krok 3 & 4: Wykrywanie braków i tworzenie zbioru.</strong><br>
+        Rozbijamy ogólniki z Klientem na mniejsze elementy. Np. "Opłaty" rozbijamy na "Płatność Visą", "Płatność Blikiem" i tworzymy z tego listę.</p>
+        
+        <p><strong>Krok 5: Wstępne szacowanie - Partia Pokera Planistycznego (Planning Poker)</strong><br>
+        To mechanizm konsensusu przy wycenie czasu w dniach/punktach. Każdy programista w pokoju bierze talię kart z nominałami na nieliniowej skali, np. ciąg Fibonacciego (0, 0.5, 1, 2, 3, 5, 8, 13, 20, 40, 100 dni). Nieliniowość wymusza zrozumienie, że im trudniejsze zadanie (np. na karcie "40"), tym margines błędu szacowania jest olbrzymi.<br>
+        Przebieg partii:
+        </p>
+        <ol>
+            <li>Kierownik czyta Opowieść Użytkownika. Obejmuje to ukryty czas na kod, testy, dokumentację itd.</li>
+            <li><strong>Karty na stół:</strong> Każdy w tajemnicy i ciszy kładzie kartę z wyceną.</li>
+            <li><strong>Chwila prawdy:</strong> Wszyscy jednocześnie odsłaniają karty.</li>
+            <li><strong>Analiza rozbieżności i szukanie Założeń:</strong> Jeśli np. Ania pokazała kartę "2 dni", a Bartek kartę "13 dni" – to jest potężny problem. Skąd ta różnica? Oznacza to, że Ania wyceniła tylko "napisanie prostej pętli w PHP", a Bartek przyjął założenie, że "do tego trzeba postawić bezpieczny serwer z certyfikatami i napisać 50 testów bezpieczeństwa". 
+            <br>W IT <strong>każde niewidoczne poczynione założenie w głowie członka grupy to potencjalne potężne zagrożenie dla projektu.</strong> Zespół musi omówić te założenia na głos, spisać je i wspólnie powtórzyć wycenę, aż do uzyskania konsensusu.</li>
+        </ol>
+
+        <p><strong>Krok 6: Podział zbyt długich opowieści / niejasności.</strong><br>
+        Zasada: Zbyt długie opowieści to po prostu ZŁE opowieści, których nie da się oszacować. Jakiekolwiek wyceny wyższe niż 15 dni generują czyste błędy. Zadania ocenione na &gt;7 dni wymagają bardzo starannej analizy. Jeśli w opisie zadania jest spójnik <strong>"i"</strong> (np. "Rejestracja i logowanie użytkownika"), to na 99% należy to rozbić fizycznie na dwie krótsze opowieści ("Rejestracja", a osobno "Logowanie").</p>
+
+        <p><strong>Krok 7: Szacowanie końcowe.</strong><br>
+        Po konsensusie we wszystkich kartach, zlicza się sumaryczny czas doprecyzowanych funkcji.</p>
+    </section>
+
+    <section class="part">
+        <h2>Część 3: Tworzenie Planu, Budżetowanie i Umowy</h2>
+        
+        <h3>1. Wstęp do Planowania Projektu</h3>
+        <p>Henry Ford mawiał: <em>„Tajemnicą sukcesu jest przede wszystkim planowanie”</em>. W zarządzaniu projektami IT etap samego gruntownego planowania może zabrać od 10% do aż 25% całkowitego czasu przeznaczonego na realizację całego zlecenia. Działamy według zasady "zmierz dwa razy, ucinaj raz".</p>
+        
+        <p><strong>Sześć kroków prowadzących do stworzenia "Planu wykonalności":</strong></p>
+        <ol>
+            <li>Zdefiniowanie w formie pisemnej celu badań/rozpoznania.</li>
+            <li>Określenie zasobów do badań (sporządzenie fizycznej listy miejsc i źródeł, np. czasopisma branżowe, dokumentacje technologii dostawców).</li>
+            <li>Delegowanie – przydzielenie zadań badawczych konkretnym analitykom w zespole.</li>
+            <li>Rozpoczęcie badań (rozpoznanie technologii).</li>
+            <li>Organizowanie wyników, kompilacja wiedzy zebranej i wyciąganie wniosków.</li>
+            <li>Ocena i decyzja.</li>
+        </ol>
+
+        <h3>2. Plan Wykonalności (Studium Wykonalności / Feasibility Study)</h3>
+        <p>To dokument zamykający fazę badawczą. Odpowiada na pytanie "Czy ten projekt w ogóle jest technicznie i biznesowo wykonalny z sukcesem?". Posiada 6 głównych sekcji (rozdziałów):</p>
+        <ol>
+            <li><strong>Zestawienie wykonawcze (Executive Summary):</strong> Krótka "pigułka" agregująca kluczowe wnioski z pozostałych 5 punktów. Służy dla zarządu, który ma czas przeczytać tylko jedną stronę.</li>
+            <li><strong>Cel:</strong> Wskazanie na rozwiązanie jakiego problemu nakierowany jest system (np. zwiększenie konkurencyjności, zwiększenie zysków o X%).</li>
+            <li><strong>Produkt:</strong> Uzasadnienie (na bazie zrobionego rozeznania) wybranej technologii czy dostawcy na tle konkurencji. Sprawdza też historię zagrożeń.</li>
+            <li><strong>Użytkownicy (Beneficjenci):</strong> Wpływ na ludzi. Określa m.in. czas potrzebny na naukę obsługi, ile przerw technicznych spowoduje wdrożenie, ile będą kosztować szkolenia dla załogi.</li>
+            <li><strong>Zobowiązania finansowe:</strong> Bardzo ważne – to <strong>NIE</strong> jest ostateczny, całkowity budżet robocizny zespołu. To wyceniony koszt samego pozyskania wybranej technologii (Cena zakupu oprogramowania, licencje roczne, comiesięczne opłaty abonamentowe (SaaS), koszt wynajętych trenerów dostawcy do szkoleń, opłata za wsparcie techniczne premium).</li>
+            <li><strong>Zalecane postępowanie:</strong> Opis zalecanych etapów wdrażania ujęty w kontekście obecnego stanu firmy.</li>
+        </ol>
+        <p>Należy mieć też baczenie na politykę w firmie (czy nowo planowany projekt nie zacznie konkurować o finanse i zasoby ludzkie z innym departamentem firmy, tworząc wewnętrzną "wojnę").</p>
+
+        <h3>3. Koszty i Kontrakty (Rozliczenia z Outsourcingiem)</h3>
+        <p>Gdy projekt opiera się na usługach firm zewnętrznych, dobrą radą dla Kierownika jest: unikaj drastycznego przeszacowywania. Wynajmowanie np. ultra-nowoczesnej chmury i kupowanie drogiego sprzętu, gdy wymagania klienta zamkną się na prostym skrypcie działającym na serwerze współdzielonym, to ogromne marnotrawstwo budżetu.</p>
+
+        <p>Istnieją dwa potężne rodzaje umów-kontraktów, które totalnie determinują to, kto ponosi ryzyko projektu:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Typ Kontraktu</th>
+                    <th>Charakterystyka</th>
+                    <th>Zalety i Wady</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Ustalona kwota<br><em>(Fixed Price)</em></strong></td>
+                    <td>Firma zewnętrzna wycenia stworzenie produktu na sztywną, konkretną, z góry gwarantowaną kwotę (np. 150 000 zł). Całe ryzyko wzrostu kosztów bierze na siebie podwykonawca.</td>
+                    <td>
+                        <strong>Zaleta dla Zleceniodawcy (Ciebie):</strong> Dokładnie znasz budżet, zero niespodzianek przy fakturze końcowej.<br>
+                        <strong>Wada dla Zleceniodawcy:</strong> Koszt jest wyższy z zasady, bo wykonawca wrzuca na cenę potężny bufor na wypadek własnych błędów. Utrudnia jakiekolwiek (nawet drobne) wprowadzanie zmian funkcjonalności w trakcie, bo wszystko jest zakute w żelazną umowę.<br>
+                        <strong>Kiedy wybrać?</strong> Gdy masz genialnie zdefiniowaną od A do Z specyfikację zakresu, a w swoim wewnętrznym zespole <em>NIE MASZ</em> eksperta, który byłby w stanie kontrolować koderskie postępy wykonawcy.
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Czas i materiał<br><em>(Time & Materials)</em></strong></td>
+                    <td>Płacisz za realnie spalone roboczogodziny ekspertów i użyte materiały (np. wynajem serwerów). Idealne środowisko dla zwinnych projektów (Agile).</td>
+                    <td>
+                        <strong>Zaleta dla Zleceniodawcy (Ciebie):</strong> Rewelacyjna elastyczność zmian. Klient może po każdym Sprincie zmienić kierunek bez renegocjacji. Koszt końcowy bywa często niższy niż "zaślepiony" Fixed Price. Wyższa jakość, bo wykonawca nie spieszy się kosztem kodu, próbując wyrabiać normę.<br>
+                        <strong>Wada dla Zleceniodawcy:</strong> Brak 100% znajomości pełnego kosztu w dniu rozpoczęcia. Zewnętrzne firmy (tzw. bodyleasing) z chęcią nabijają "puste" godziny programistów, jeśli nie patrzy się im na ręce.<br>
+                        <strong>Kiedy wybrać?</strong> Kiedy projekt ma charakter badawczy lub bardzo zmienny (Agile) oraz bezwzględnie w sytuacji, gdy w swoim obozie <em>MASZ WŁASNEGO DOŚWIADCZONEGO EKSPERTA</em>, który potrafi sprawdzić i skontrolować, czy zaraportowana przez firmę trzecią "10-godzinna robota" faktycznie ma techniczny sens.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p>W dzisiejszym IT często stosuje się tzw. <strong>Podejście Mieszane (hybrydę)</strong>. Baza systemu ("core") wyceniana jest w modelu <em>Fixed Price</em>, a długotrwały rozwój modułów dodatkowych opiera się już o rozliczanie roboczogodzin <em>Time and Materials</em>.</p>
+
+        <h3>4. Problemy Wydajnościowe (Polska a Europa)</h3>
+        <p>Istnieje bardzo bolesny dla menedżerów problem rozbieżności między <em>Oczekiwaniami Klienta a Szacunkami Zespołu</em>. Klient wymyślił projekt na 6 miesięcy pracy, a zespół wycenił go na 14 miesięcy. <strong>Co robić?</strong></p>
+        <ol>
+            <li>Klient musi bezwzględnie usiąść z zespołem i nadać twarde priorytety na funkcje. Zostawia się tylko minimum potrzebne do uruchomienia biznesu – tzw. bazowe <strong>Wydanie 1.0 (MVP)</strong>. Zmniejsza to zakres czasowy.</li>
+            <li>Jeśli wydanie 1.0 ciągle przekracza terminy – musimy obciąć jego funkcje "wymagane" jeszcze brutalniej.</li>
+            <li>Gdy kompromis jest wciąż technicznie niemożliwy, zostaje przyznanie się do porażki i ubicie pomysłu, albo... dolanie potężnych pieniędzy i zatrudnienie nowych programistów.</li>
+        </ol>
+
+        <div class="warning-box">
+            <h4>Statystyki czasu spędzanego w pracy a Realna Wydajność</h4>
+            <p><strong>Wydajność pracy absolutnie nie jest tożsama z długim czasem ślęczenia przed biurkiem!</strong> Zmierza się ją wielkością dochodu zrobionego w jak najkrótszym oknie czasowym.</p>
+            <p>Dane statystyczne (z lat 2001-2012 na bazie OECD) uświadamiają nas, że Polacy są absolutnymi pracoholikami w kontekście godzin. Z wynikiem blisko 1984, a potem ok. 1929 godzin rocznie zajmowaliśmy drugie miejsce na świecie. Jednak nasza wydajność <em>(liczona jako PKB podzielone przez czas pracy)</em> była skrajnie niska. Przykładowo w 2009 roku w ciągu godziny Polak wytwarzał 8,8 dolara, podczas gdy Niemiec generował 24,8 dolara, a Holender pracując dużo krócej tygodniowo (średnio 30h, podczas gdy my ponad 40h) osiągał aż 29,6 dolara. W 2012r polski pracownik to tylko ok. 10,4 Euro generowane w ciągu "roboczogodziny".</p>
+            <p><strong>Z czego wynika ta słaba polska wydajność mimo potężnej liczby godzin pracy?</strong> Wymienia się tu czynniki organizacyjno-mentalne: marnowanie czasu przed komputerem na niepracowe rzeczy (portale społecznościowe, social-media), bardzo złą politykę przepisów prawnych, brak wewnątrzfirmowych inwestycji szkoleniowych, nieformalne obowiązki ("od wszystkiego") oraz złą i niedofinansowaną strukturę motywacyjną.</p>
+        </div>
+
+    </section>
+
+    <section class="part">
+        <h2>Część 4: Typy Organizacji, Harmonogramy i CPM</h2>
+
+        <h3>1. Trzy filary struktur w organizacji firmy</h3>
+        <p>To, ile jako Menedżer (Kierownik Projektu / PM) posiadasz władzy, zależy wyłącznie od modelu firmy w którym cię zatrudniono:</p>
+        <ul>
+            <li><strong>Struktura Operacyjna (Funkcjonalna):</strong> Tradycyjny korporacyjny model z twardym podziałem (Dział Marketingu, Dział IT, Dział Księgowości). Pracownicy są przypisani i zablokowani w swoich "silosach". Decyzje podejmuje wielki Kierownik Działu (np. Dyrektor IT). <em>Rola Kierownika Projektu jest tu upokarzająca</em> – nie ma on żadnych uprawnień. Pełni tylko funkcję asystenta/koordynatora między działami.</li>
+            <li><strong>Struktura Projektowa:</strong> Święty Graal dla Menedżerów. Na start prac wyciąga się zasoby z całej firmy i tworzy nowy odizolowany zespół (Zadanie X). Ten dedykowany oddział zajmuje się wyłącznie swoim projektem, aż do jego końca. <em>Kierownik Projektu ma 100% władzy absolutnej nad ludźmi i pełnym budżetem.</em></li>
+            <li><strong>Struktura Macierzowa:</strong> Model kompromisowy i najczęstszy. Podwładny dostaje "dwóch szefów". Ma zadania ze swojego pierwotnego działu narzucane przez Kierownika Działu, i zadania z nowego Zespołu na rzecz Projektu narzucane przez Kierownika Projektu. Rodzi to kolizje.
+                <br>- <em>Macierz Zrównoważona:</em> Obaj "szefowie" mają na pracownika po 50% uprawnień.
+                <br>- <em>Macierz Silna:</em> Rządzi głownie Kierownik Projektu, ma dużo siły przebicia.
+                <br>- <em>Macierz Słaba:</em> Rządzi Kierownik Działu (operacyjny), a PM to tylko "proszący" organizator.</li>
+        </ul>
+
+        <h3>2. Teorie Motywacji: Psychologia zarządzania IT</h3>
+        <p>Bez względu na technologię, kod wciąż piszą żywi ludzie, którzy potrzebują motoru do działania. Najważniejsze, klasyczne teorie wykorzystywane przez Project Managerów do napędzania grupy, to:</p>
+        <ul>
+            <li><strong>Piramida A. Maslowa (Hierarchia potrzeb):</strong> 1. Potrzeby fizjologiczne (posiadanie po prostu miejsca do świadczenia pracy z klimatyzacją/biurkiem). 2. Bezpieczeństwo (gwarancja braku bezsensownego zwolnienia i stabilna pensja pozwalająca opłacić mieszkanie). 3. Przynależność (przyjaźnie w zespole projektowym, wyjścia na piwo po pracy, bycie szanowanym). 4. Uznanie i prestiż (zakończenie projektu dające satysfakcję publiczną). 5. Samorealizacja (bycie liderem w nowej wchodzącej architekturze - w tym aspekcie tkwią chęci rozwoju eksperckiego pracownika).</li>
+            <li><strong>Teoria Motywacyjna F. Herzberga:</strong> Udowadnia wprost potężny błąd myślowy prezesów. Dzieli rzeczywistość na dwa filary.
+                <br>- <em>Czynniki "higieny psychicznej":</em> Czyli pensja podstawowa, dobre warunki BHP, kawa w firmie. Paradoksalnie posiadanie tego wszystkiego kompletnie NIE WZBUDZA dodatkowej motywacji programisty na wysokim poziomie. Ich obecność jest stanem zerowym. Ale ich nagły brak (odebranie pensji, mroźne biuro) wywoła od razu drastyczny, destrukcyjny błąd demotywacyjny.
+                <br>- <em>Czynniki zadowolenia (motywatory właściwe):</em> Poczucie wagi i ogromnej odpowiedzialności za kod, docenienie przez zarząd sukcesu, potężna awansowa i szkoleniowa wirtuozeria. To one odpowiadają za żądnego i potężnego pod kątem wyciągnięcia z siebie "150%" pracownika.</li>
+            <li><strong>Teoria X i Y (D. McGregora):</strong> Definiuje sposób patrzenia menedżera na świat pracowników:
+                <br>- <em>Styl (Teoria) X - Negatywny, Autorytarny:</em> Zakłada, że człowiek z natury nienawidzi pracować, lęka się zadań i wymiguje przy byle okazji. Trzeba więc stosować <em>Mikrozarządzanie (Micromanagement - bardzo zła stara szkoła polegająca na siedzeniu za plecami podwładnego i decydowaniu za niego na każdym etapie ułamka zlecenia)</em>. Opiera się to na ciągłej kontroli bicia po łapach przez kary i straszeniu, bez perspektyw, z brakiem poczucia misji.
+                <br>- <em>Styl (Teoria) Y - Pozytywny, Innowacyjny:</em> Zakłada zupełną odwrót – że praca to normalny, fajny i dający rozwój punkt istnienia. Ludzie rzucani na głęboką wodę z autonomicznym zakresem mają super pokłady kreatywności. Pracownicy rzadko wykorzystują swój genialny talent w firmach i menedżerowie muszą umożliwić im rozkwit przy pełnej autonomii.</li>
+            <li><strong>Teoria Z (W. Ouchiego):</strong> Zarządzanie mocno partycypatywne i współuczestniczące (zapożyczone pierwotnie z Japońskich zakładów o długoletnich stażach). Koncepcja zarządzania oparta na zaufaniu, współudziale pracowników w podejmowaniu decyzji, długoterminowym zatrudnieniu oraz budowaniu silnych więzi między pracownikami a organizacją.</li>
+            <li><strong>Teoria Oczekiwań (V. Vrooma):</strong> Zakłada, że motywacja pracownika zależy od jego przekonania, że włożony wysiłek doprowadzi do osiągnięcia dobrych wyników, a te zostaną nagrodzone w sposób dla niego wartościowy. Człowiek jest bardziej skłonny do działania, gdy wierzy, że jego praca przyniesie oczekiwane rezultaty oraz konkretną korzyść, taką jak premia, awans czy uznanie.</li>
+        </ul>
+
+        <h3>3. Kick-off, Praca Zespołowa, Koszty Pracownicze</h3>
+
+        <h4>Inauguracja (Kick-off) Projektu</h4>
+        <p>To wydarzenie startowe trwające około kwadransa. Jest super ważne, by zapewnić w grupie zaangażowanie. Obecność samego szefostwa zarządu ma nadać "rangę". Należy zaprezentować jasny cel, omówić zasady zarządzania, wskazać kluczową rolę w wynikach oraz powstrzymać sztywny korporacyjny patetyzm na rzecz przełamania psychologicznych "lodów". Wtedy oficjalnie startuje tzw. "Kronika Projektowa".</p>
+
+        <div class="warning-box">
+            <h4>Błędy przy szacunkach personelu i kalkulacje (Ważne pułapki dla PM'a)</h4>
+            <p>Nie daj się oszukać prostym ułamkom. W świecie kodowania ułamek "jeden robi to w 4 godziny, więc wezmę czterech i zrobią to w 1 godzinę" – jest morderczą, wielką iluzją i rzadko ma związek z oszczędnościami całkowitymi.</p>
+            <ul>
+                <li><strong>Rozmycie odpowiedzialności przy dużej grupie (tzw. "Próżniactwo społecznie"):</strong> Im więcej osób wciśniesz w małe przydzielone zadanie bez jednoznacznego podziału na wzięcie odpowiedzialności przypisanej z imienia na osobę "odpowiedzialną", tym łatwiej ktoś skryje swoje lenistwo w wynikach w grupie licząc, że koledzy dopiszą resztę.</li>
+                <li><strong>Zatory wielozadaniowe:</strong> Jeżeli jeden pracownik jest za mocno eksploatowany w ramach kilku równoległych w dziale zadań informatycznych (programuje bazę, doradza stażystom, zarządza serwerem stacjonarnym w biurze), powstaną tzw. "zatory", tzw. wąskie gardła. Wymagane są wtedy dla niego brutalne i jednoznaczne określenia priorytetów ważności w dniówce.</li>
+                <li><strong>Brak wiedzy domenowej:</strong> W sytuacjach potężnej dedykowanej analizy kodowej w medycynie czy bardzo specjalistycznym projekcie bankowym symulacji finansów programista nie może poświęcić miesiąca próbując poznać na wikipedii w internecie dziedzinę chemii czy ekonomii od podszewki. Bezapelacyjnie musisz oszacować z góry wynajęcie eksperta dziedzinowego "z zewnątrz" jako pomoc dla kodu.</li>
+            </ul>
+        </div>
+        
+        <h4>Koszty utrzymania załogi u pracodawcy vs "Netto" (na bazie np. 2012 / 2018 roku)</h4>
+        <p>
+  Przy szacowaniu budżetu zespołu programistycznego nie należy brać pod uwagę
+  wyłącznie kwot wypłacanych pracownikom „na rękę”, czyli netto.
+  Istotny jest pełny koszt pracodawcy, tzw. kwota <strong>brutto-brutto</strong>.
+</p>
+
+<p>
+  W Polsce całkowite obciążenie może być znacznie wyższe od pensji netto.
+  Wskaźnik narzutu oznaczany jako <strong>&eta;</strong> może wynosić około
+  <strong>59–60%</strong>.
+</p>
+
+<p>
+  Przykładowo, jeśli programista otrzymuje <strong>4000 PLN netto</strong>,
+  to całkowity koszt pracodawcy może wynieść około
+  <strong>6808 PLN miesięcznie</strong>. Kwota ta obejmuje m.in. składki ZUS,
+  ubezpieczenia emerytalne, rentowe, chorobowe, zdrowotne oraz zaliczkę na PIT.
+</p>
+        
+        <h3>4. Wyliczanie i Tworzenie Planu Projektowego oraz Budżetu</h3>
+        <p>Jednym z najabsolutniejszych obowiązków jest prowadzona na co dzień ciągła i nieprzerywalna fizyczna, bezpośrednia "Kontrola Wydatków" w zestawieniu w tabelach i w rozliczeniach zasobów magazynowych oraz narzędziowych ewidencji rozbieżności czasu przepracowanego personelu do zadeklarowanego harmonogramowo planu wyjściowego. W tym pomaga <strong>11 bazowych części "Planu":</strong> Karta Projektu, Deklaracja dokładnego zakresu zadań, SPP, Raport/Zestawienie relacji Czasu i Kosztów ze szacowaniami, Miary granicznych wydajności pracy, Kamienie Milowe, Rozdysponowany model wymagań z profilami pracowników, rejestr planowania reagowania pod kątem ryzyk, otwarte niedokończone kwestie z pytań klienta (Open issues), spis ewidencjonowanych kwitów rozliczeń magazynowych, Plany pięciu podzestawów dla komunikacji.</p>
+
+        <h4>Metody planowania / Szacowania samych bazowych kwot kosztów w projekcie IT</h4>
+        <ol>
+            <li><strong>Lista absolutnych produktów:</strong> Metoda szacowania kosztów oparta na zestawieniu wszystkich produktów i zasobów potrzebnych do realizacji projektu. Jest łatwa w zastosowaniu, lecz nie uwzględnia zmian cen w czasie ani harmonogramu projektu, co może prowadzić do niedoszacowania lub przeszacowania kosztów.</li>
+            <li><strong>Szacowanie etapowe (Phase Gate Estimating):</strong> Używana na gigantycznych czasowo zleceniach. Polega na niezwykle uciążliwym dokładnym liczeniu tego odcinka/fazy najbliższego startowi, a szacowanie późniejszych odcinków pozostawia zgrubnie – i tak sukcesywnie po zakończeniu pierwszej, ocenia się kolejną następną fazę.</li>
+            <li><strong>Z góry do dołu (analogiczne parametryczne):</strong> Metoda polegająca na oszacowaniu kosztów projektu na podstawie danych z podobnych projektów realizowanych wcześniej. Zakłada się, że jeśli wcześniejszy projekt o zbliżonym zakresie kosztował określoną kwotę, to nowy projekt będzie wymagał podobnego budżetu. Metoda jest szybka i łatwa w zastosowaniu, jednak jej dokładność może być ograniczona, szczególnie w branży IT, gdzie technologie, wymagania oraz warunki realizacji projektów zmieniają się bardzo dynamicznie.</li>
+            <li><strong>Z dołu na samą górę:</strong> Metoda polegająca na szczegółowym oszacowaniu kosztów wszystkich zadań i elementów projektu, a następnie zsumowaniu ich w celu określenia całkowitego budżetu. Uwzględnia koszty integracji poszczególnych komponentów, rezerwy na ryzyko oraz inne potencjalne wydatki. Charakteryzuje się wysoką dokładnością, lecz jest czasochłonna i wymaga dużego nakładu pracy podczas planowania.</li>
+        </ol>
+
+        <h4>Struktura Podziału Pracy – SPP (ang. WBS)</h4>
+        <p>Technika planowania projektu polegająca na hierarchicznym podziale projektu na coraz mniejsze elementy pracy. Proces ten prowadzi do wyodrębnienia pakietów roboczych, czyli najmniejszych zadań, które można przypisać konkretnym osobom lub zespołom oraz oszacować pod względem czasu i kosztów. SPP ułatwia organizację projektu, kontrolę postępów oraz zarządzanie zasobami. Ważnym elementem struktury są również kamienie milowe, które wyznaczają osiągnięcie istotnych etapów projektu i pozwalają monitorować jego realizację.</p>
+
+
+        <h3>5. Planowanie Sieciowe z Wykresem (Harmonogramy Gantta i CPM)</h3>
+        <p>By zamienić wyceny z poker'a w osadzony na kalendarzu mądry czas operacyjny trzeba wykorzystać analizy sieciowe w graficznej/matematycznej metodologii.</p>
+        <p><strong>Zwykły Wykres Gantta:</strong> Graficzna metoda prezentacji harmonogramu projektu. Przedstawia zadania w postaci poziomych pasków umieszczonych na osi czasu, dzięki czemu można łatwo określić termin rozpoczęcia i zakończenia poszczególnych prac oraz obserwować ich wzajemne zależności. Wykres pozwala śledzić postęp realizacji projektu, rozkład obciążenia zasobów oraz zadania wykonywane równolegle.
+        <br><strong>Diagramy sieciowe metodologii PERT (Program Evaluation and Review Technique):</strong> Zastępują paski logicznymi węzłami wyrysowanych sieci i wariantów zależności ze skrzyżowaniami dróg.</p>
+
+        <div class="concept-box">
+            <h4>Praktyczne Rozwiązywanie "Metody Ścieżki Krytycznej" (CPM)</h4>
+           <p> <strong>Ścieżka krytyczna</strong> to najdłuższa sekwencja zależnych od siebie zadań w projekcie, która wyznacza minimalny czas jego realizacji. Każde opóźnienie zadania znajdującego się na ścieżce krytycznej powoduje opóźnienie całego projektu. Dla zadań należących do ścieżki krytycznej całkowity luz czasowy wynosi <strong>0</strong>. </p> <p><strong>Podstawowe oznaczenia:</strong></p> <ul> <li><strong>T</strong> – czas trwania zadania.</li> <li><strong>ES (Early Start)</strong> – najwcześniejszy możliwy termin rozpoczęcia zadania.</li> <li><strong>EF (Early Finish)</strong> – najwcześniejszy możliwy termin zakończenia zadania.</li> <li><strong>LS (Late Start)</strong> – najpóźniejszy termin rozpoczęcia zadania bez opóźnienia projektu.</li> <li><strong>LF (Late Finish)</strong> – najpóźniejszy termin zakończenia zadania bez opóźnienia projektu.</li> </ul> <p><strong>Obliczenia „w przód”:</strong></p> <ul> <li><strong>ES</strong> = EF poprzedniego zadania.</li> <li><strong>EF</strong> = ES + T.</li> </ul> <p><strong>Obliczenia „wstecz”:</strong></p> <ul> <li><strong>LF</strong> = LS następnego zadania.</li> <li><strong>LS</strong> = LF − T.</li> </ul> <p> Metoda CPM pozwala określić, które zadania mają kluczowe znaczenie dla terminowego zakończenia projektu oraz gdzie występują ewentualne rezerwy czasowe. Jest powszechnie stosowana podczas planowania i kontroli harmonogramów projektów. </p>
+            <p><em>(Wykład prezentował w 100% wyliczony przypadek ścieżki decyzyjnej idącej dla rzutów testowych na bloku A(2 tygodnie)->C(20)->D(15)->G(3)->H(3)->I(2), generujący finalną ścieżkę jako zablokowane sztywno trwające 45 tygodni wyliczonego, nieprzerywalnego zdefiniowanego czasu łańcuchowego na metę docelową). Pół-żartobliwie puentując to w menedżerce starym porzekadłem ukazanym na zdjęciu ze strajkiem o braku zapasów na rolce papieru przy sedesie: "Nie rozpoczynaj działań produkcyjnych w tym projekcie, dopóki wszystkie zasoby robocze z dokumentacji materiałów na bazie przedniego punktu wejścia operacyjnego po prostu u Ciebie faktycznie nie będą skompletowane!".</em></p>
+        </div>
+    </section>
+
+    <section class="part">
+        <h2>Część 5: Prawdopodobieństwo Kryzysów i Zarządzanie Ryzykiem</h2>
+
+        <h3>1. Definicje zagrożeń i obszary uderzenia w Menedżerce</h3>
+
+        <p><strong>Ryzyko</strong> to możliwość, że coś się nie uda (wynik niepewny, problematyczny).</p>
+
+        <p>Biorąc pod uwagę rutynowe codzienne operacje fabryki dla stabilnych w środowiskach działań operacyjnych ryzyko na niepożądane zachwiania kosztów niespodziankowych jest u nich w miarę niewielkie dla ich przyszłości. Podejmowanie jednak jakichkolwiek rewolucyjnych Projektów to zupełnie nowa i niepoznana kraina (szansa na wdrożenie własnej zaawansowanej wiedzy wymuszająca twarde nagłe modyfikacje w strukturze), generuje szansę wielkich sukcesów, ale potężne ryzyko dla porażek wynikowych i problematycznego kapitału.</p>
+        
+        <h4>Czym mierzymy obiektywne zagrożenie? Istnieją 4 rozpisane formalne Modele w organizacjach:</h4>
+        <ol>
+            <li><strong>Model uproszczony punktów:</strong> Tworzy się proste checklisty, w których np. "Brak prądu w rejonie firmy" wpisuje się punktację: `Zagrożenie prądu = waga 4`, lub "Niespodziewana odejście developera = waga 8". Zsumowanie punktów wykazuje na "wagę całkowitego ryzyka zjawiskowego". Często dla projektów małych.</li>
+            <li><strong>Model Standardowej Miary:</strong> Wzór oparty na matematycznym szacunku: <br><span class="formula" style="font-size:1rem; border:none; background:rgba(0,0,0,0.1)">Ryzyko czynnika decyzyjnego = Prawdopodobieństwo wystąpienia błędu × Miara oceny potęgi uderzenia</span></li>
+            <li><strong>Model ujęcia powiązań Kaskadowych:</strong> Bada, jak wystąpienie powiązanych czynników wpłynie na wielopoziomowe kolejne lawinowe odchylenia następujących zaraz po sobie zdarzeń projektowych. <br><span class="formula" style="font-size:1rem; border:none; background:rgba(0,0,0,0.1)">Ryzyko czynnika decyzyjnego = (Prawdopodobieństwo wystąpienia błędu) × (Miara oceny potęgi uderzenia / wpływ na projekt)</span></li>
+            <li><strong>Model logiczny analizy uderzeń Przyczynowo-Skutkowych:</strong> Służy do badania zależności między problemem lub efektem końcowym a jego możliwymi przyczynami. Polega na określeniu badanego skutku, np. spadku jakości, wzrostu kosztów albo wystąpienia awarii, a następnie na systematycznym poszukiwaniu źródeł problemu. Analiza uwzględnia różne poziomy przyczyn, aż do tzw. przyczyn źródłowych, czyli podstawowych powodów wystąpienia danego zjawiska.</li>
+        </ol>
+
+        <h4>Zbiory i Klasyfikacje obszarów wywrotowych: Z czym musi walczyć Kierownik IT?</h4>
+        <p>Kierownik projektu IT musi zarządzać ryzykiem pochodzącym z wielu obszarów. Zagrożenia mogą mieć charakter <strong>biznesowy</strong>, np. źle zdefiniowane cele projektu, brak uzasadnienia ekonomicznego lub niewystarczające finansowanie. Występują również ryzyka <strong>organizacyjne i polityczne</strong>, związane z konfliktami interesów, zmianami priorytetów zarządu czy zmianami przepisów prawa. Istotną grupę stanowią także zagrożenia <strong>harmonogramowe i zasobowe</strong>, takie jak niedoszacowanie kosztów, opóźnienia dostawców czy braki kadrowe. Dodatkowo projekty IT są narażone na ryzyka <strong>techniczne</strong>, obejmujące awarie, problemy z kompatybilnością systemów, luki bezpieczeństwa oraz cyberataki. Ważnym obszarem są również ryzyka <strong>społeczne i organizacyjne</strong>, wynikające z oporu użytkowników wobec zmian lub niewłaściwej dokumentacji procesów.</p>
+
+        <h3>2. Narzędzia i Techniki Oceny Ryzyka w Organizacji</h3>
+        
+        <h4>A. Metodologia ujęcia SWOT / Analiza Towarowa TOWS</h4>
+        <p>Wykorzystywana powszechnie do weryfikowania przed startem całościowej mocy biznesowej, w heurystycznym opartym ujęciu 4 grup rozrysowanych w kwadrantach na stole tablicy:</p>
+        <ul>
+            <li>
+    <strong>Czynniki wewnętrzne (na które organizacja ma bezpośredni wpływ):</strong><br>
+    <strong>S</strong>(Strengths – Mocne strony) – atuty i przewagi organizacji, np. doświadczony zespół programistów, nowoczesne technologie czy wysoka jakość produktów.<br>
+    <strong>W</strong>(Weaknesses – Słabe strony) – wewnętrzne ograniczenia i problemy, np. niedobór sprzętu, niewystarczające zasoby finansowe, braki kadrowe lub słaba organizacja pracy.
+</li><br>
+
+<li>
+    <strong>Czynniki zewnętrzne (pochodzące z otoczenia organizacji):</strong><br>
+    <strong>O</strong>(Opportunities – Szanse) – korzystne zjawiska i okoliczności, które mogą wspierać rozwój organizacji, np. wzrost popytu na usługi, osłabienie konkurencji lub pojawienie się nowych rynków.<br>
+    <strong>T</strong>(Threats – Zagrożenia) – czynniki zewnętrzne mogące negatywnie wpłynąć na działalność organizacji, np. zmiany przepisów, wzrost kosztów, działania konkurencji czy kryzysy gospodarcze.
+    <br><em>W analizie SWOT należy pamiętać, że mocne i słabe strony dotyczą wnętrza organizacji, natomiast szanse i zagrożenia pochodzą z jej otoczenia. Przykładowo słaba komunikacja w zespole jest słabą stroną (W), a nie zagrożeniem (T).</em>
+</li>
+        </ul>
+        <p>Po oszacowaniu z w/w punktami sił natężenia relacji macierzy metodologią <strong>TOWS</strong> zadając testy punktowe w 0 (brak), 1 (słabo), 2 (silnie) decyduje się na podstawie tego o strategii uderzeniowej.</p>
+        <p>Wynik krzyżowania (TOWS) wskazuje odpowiednią strategię biznesową:</p>
+        <ul>
+            <li><strong>Strategia Agresywna (Max-Max):</strong> Firma jest potężna wewnątrz i ma świetny układ rynkowy. Czas na ekspansję i przejmowanie rynku.</li>
+            <li><strong>Strategia Konserwatywna (Max-Min):</strong> Mamy super zespół i produkt, ale rynek się wali (kryzys). Firma powinna "zacisnąć pasa" i bazować na swoich zasobach, by przetrwać burzę.</li>
+            <li><strong>Strategia Konkurencyjna (Min-Max):</strong> Zespół jest słaby, technologia przestarzała, ale pojawia się luka na rynku. Trzeba szybko zlikwidować swoje słabości, by wykorzystać szansę.</li>
+            <li><strong>Strategia Defensywna (Min-Min):</strong> Fatalny produkt na kryzysowym rynku. Pełna obrona, ratowanie kapitału lub wycofanie się.</li>
+        </ul>
+
+        <h4>B. Rejestr Projektowy Zdarzeń Zagrożeniowych</h4>
+        <p>
+    Zidentyfikowane ryzyka nie powinny być przechowywane jedynie w pamięci członków zespołu.
+    Są one dokumentowane i na bieżąco aktualizowane w <strong>Rejestrze Ryzyka</strong> (Risk Register).
+    Rejestr ten stanowi podstawowe narzędzie monitorowania zagrożeń w projekcie.
+</p>
+
+<p>
+    Każde ryzyko otrzymuje unikalny identyfikator (ID), kategorię oraz przypisanego
+    <strong>właściciela ryzyka</strong>, czyli osobę odpowiedzialną za jego obserwację
+    i raportowanie. W rejestrze zapisuje się również ocenę
+    <strong>prawdopodobieństwa wystąpienia</strong> oraz
+    <strong>wpływu na projekt</strong>, co pozwala określić poziom zagrożenia.
+</p>
+
+<p>
+    Dodatkowo rejestr zawiera opis działań zapobiegawczych lub reakcji na ryzyko,
+    datę jego identyfikacji, aktualny status oraz informacje o zmianach poziomu ryzyka
+    w czasie. Dzięki temu kierownik projektu może stale monitorować zagrożenia
+    i podejmować odpowiednie działania ograniczające ich skutki.
+</p>
+        <h4>C. Profile Ryzyka (Barwne Macierze Termiczne w Komórkach)</h4>
+        <p>
+    Profil ryzyka jest często przedstawiany w postaci <strong>macierzy ryzyka</strong>,
+    która obrazuje zależność między <strong>prawdopodobieństwem wystąpienia zagrożenia</strong>
+    a <strong>siłą jego wpływu na projekt</strong>. Na jednej osi umieszcza się
+    prawdopodobieństwo, a na drugiej wpływ ryzyka.
+</p>
+
+<p>
+    Poszczególne pola macierzy są oznaczane kolorami, które wskazują poziom zagrożenia:
+    <strong>zielony</strong> oznacza ryzyko niskie i akceptowalne,
+    <strong>żółty lub pomarańczowy</strong> ryzyko umiarkowane wymagające monitorowania,
+    natomiast <strong>czerwony</strong> oznacza ryzyko wysokie, wymagające natychmiastowej reakcji.
+</p>
+
+<p>
+    Jeżeli ryzyko znajdzie się w czerwonej strefie, projekt lub dane działanie nie powinno być realizowane do czasu wdrożenia działań ograniczających zagrożenie. Celem jest obniżenie poziomu ryzyka do wartości akceptowalnej zgodnej z tzw. <strong>apetytem na ryzyko</strong> organizacji. W praktyce podejmuje się działania zapobiegawcze lub korygujące, które mają zmniejszyć prawdopodobieństwo wystąpienia ryzyka lub jego wpływ, tak aby przenieść je z czerwonej strefy do strefy pomarańczowej, żółtej lub zielonej.
+</p>
+
+        <h3>3. Polityka Zarządzania Ryzykiem: Rola Komitetu Sterującego i Eskalacja</h3>
+       <p>
+    Skuteczne zarządzanie ryzykiem wymaga stosowania uporządkowanego
+    <strong>cyklu zarządzania ryzykiem</strong>, obejmującego kolejne etapy
+    identyfikacji, analizy, oceny, planowania reakcji oraz monitorowania ryzyk.
+    Pierwszym i jednym z najważniejszych kroków jest określenie polityki
+    zarządzania ryzykiem, czyli zdefiniowanie zasad postępowania, zakresu
+    odpowiedzialności oraz uprawnień decyzyjnych poszczególnych osób i zespołów.
+</p>
+
+        <div class="note-box">
+            <h4>Kluczowe Role w Procesie Zarządzania Ryzykiem:</h4>
+            <ul>
+                <li><strong>Komitet Sterujący (KS):</strong> Najwyższy organ decyzyjny w organizacji. Pełni rolę nadrzędnego "właściciela" całego procesu zarządzania ryzykiem. To Komitet zatwierdza ostateczne progi tolerancji na zagrożenia, akceptuje strategiczne plany ratunkowe i ostatecznie decyduje o uruchomieniu, wstrzymaniu lub zamknięciu projektu.</li>
+                <li><strong>Zarząd Projektu:</strong> Grupa wyznaczona do nadzorowania projektu w imieniu Komitetu. Skupia się na kontroli finansów, weryfikacji jakości oraz nadzorze nad działaniami dostawców.</li>
+                <li><strong>Kierownik Projektu (PM):</strong> Ramię operacyjne. Bieżąco aktualizuje i zarządza <em>Rejestrem Ryzyka</em>, komunikuje problemy zespołowi wykonawczemu i odpowiada za regularne raportowanie stanu zagrożeń na szczyt – do Komitetu Sterującego.</li>
+                <li><strong>Właściciele Ryzyka:</strong> Wyznaczeni z imienia i nazwiska pracownicy. Każdy "właściciel" ma przypisany jeden lub kilka konkretnych czynników ryzyka i to na nim spoczywa wyłączny obowiązek ciągłego monitorowania ich statusu.</li>
+            </ul>
+        </div>
+
+        <h4>Apetyt na ryzyko i Eskalacja</h4>
+        <p>Jedną z głównych ról Komitetu Sterującego na początku projektu jest ustalenie tzw. <strong>"Apetytu na Ryzyko"</strong>. Jest to dopuszczalny, maksymalny poziom zagrożeń finansowych lub jakościowych, jaki organizacja jest w stanie "przełknąć" bez wpadania w panikę.</p>
+        
+        <p>Co dzieje się w sytuacji, gdy na macierzy lub w rejestrze siła uderzeniowa ryzyka (mimo podejmowanych środków zaradczych) drastycznie rośnie i <strong>przebija ustalony próg apetytu na ryzyko</strong>? Wtedy Kierownik Projektu traci uprawnienia do samodzielnej obrony operacyjnej. Włącza się procedura tzw. <strong>Eskalacji Ryzyka</strong>. Polega ona na natychmiastowym przerzuceniu decyzyjności (zaraportowaniu problemu) o stopień wyżej – bezpośrednio do Komitetu Sterującego.</p>
+        
+        <p>Po eskalacji to <strong>Komitet Sterujący musi podjąć ostateczne, ciężkie decyzje</strong>, takie jak:</p>
+        <ul>
+            <li>Przydzielenie dodatkowych, potężnych środków finansowych z rezerw firmy na ugaszenie "pożaru".</li>
+            <li>Okrojenie części zaplanowanych, bardzo ryzykownych prac z zakresu projektu.</li>
+            <li>Podjęcie najtrudniejszej decyzji ze wszystkich: <strong>Natychmiastowe zablokowanie i całkowite zamknięcie projektu</strong> w celu minimalizacji dalszych strat.</li>
+        </ul>
+
+        <h3>4. Reakcje Odpowiedziowe Operacyjne w Pętli</h3>
+        <h3>4. Reakcje na ryzyko</h3>
+<p>Proces zarządzania ryzykiem obejmuje analizę jakościową i ilościową oraz ustalenie odpowiedniej strategii reagowania. W przypadku zagrożeń mogących mieć <strong>wpływ negatywny</strong>, stosuje się następujące akcje:</p>
+<ul>
+    <li><strong>Eliminacja:</strong> Zapobieganie wystąpieniu danego zdarzenia bądź niwelowanie jego wpływu na projekt.</li>
+    <li><strong>Redukcja:</strong> Zmniejszenie prawdopodobieństwa wystąpienia danego zdarzenia lub zmniejszenie wpływu zagrożenia na projekt.</li>
+    <li><strong>Przeniesienie:</strong> Przekazanie odpowiedzialności za całość lub niektóre aspekty zagrożenia stronie trzeciej, np. poprzez ubezpieczenie lub odpowiednie klauzule w kontraktach.</li>
+    <li><strong>Plany rezerwowe:</strong> Zorganizowanie środków do uruchomienia działań w przypadku zmaterializowania się zagrożenia.</li>
+    <li><strong>Akceptacja:</strong> Strategia stosowana dla zagrożeń o małym prawdopodobieństwie wystąpienia lub przy nieracjonalnych kosztach innych możliwych działań zaradczych.</li>
+</ul>
+
+        <div class="concept-box">
+            <p> <strong>Drzewa decyzyjne</strong> są narzędziem wspierającym podejmowanie decyzji w warunkach niepewności. Pozwalają porównywać różne warianty działania poprzez analizę możliwych zdarzeń losowych oraz ich skutków finansowych. Podstawową miarą stosowaną w tej metodzie jest <strong>EMV (Expected Monetary Value)</strong>, czyli oczekiwana wartość pieniężna. </p> <h5>Oznaczenia węzłów</h5> <ul> <li><strong>□ Węzeł decyzyjny</strong> – punkt, w którym podejmowana jest decyzja pomiędzy różnymi wariantami działania.</li> <li><strong>○ Węzeł losowy</strong> – przedstawia możliwe zdarzenia wraz z przypisanym prawdopodobieństwem wystąpienia.</li> <li><strong>△ Liść końcowy</strong> – końcowy wynik danego scenariusza, najczęściej wyrażony jako zysk lub strata.</li> </ul> <h5>Obliczanie EMV</h5> <p> Wartość EMV oblicza się dla każdego węzła losowego jako sumę iloczynów prawdopodobieństw oraz odpowiadających im wyników finansowych: </p> <p> <strong>EMV = Σ (P × V)</strong> </p> <p> gdzie: <br>P – prawdopodobieństwo wystąpienia zdarzenia, <br>V – wartość finansowa wyniku (zysk lub strata). </p> <p> Obliczenia wykonuje się od końca drzewa w kierunku korzenia. Po wyznaczeniu EMV dla wszystkich wariantów wybiera się decyzję o najwyższej oczekiwanej wartości pieniężnej. </p> <h5>Przykład</h5> <p><strong>D1 – Projekt kas fiskalnych</strong></p> <ul> <li>Sukces: 50% → +900 000 PLN</li> <li>Porażka: 50% → −100 000 PLN</li> </ul> <p> EMV = (0,5 × 900 000) + (0,5 × -100 000) = 450 000 − 50 000 = <strong>400 000 PLN</strong> </p> <p><strong>D2 – Projekt pilotów TV</strong></p> <ul> <li>Sukces: 80% → +390 000 PLN</li> <li>Porażka: 20% → −10 000 PLN</li> </ul> <p> EMV = (0,8 × 390 000) + (0,2 × -10 000) = 312 000 − 2 000 = <strong>310 000 PLN</strong> </p> <h5>Wniosek</h5> <p> Ponieważ wariant D1 osiąga wyższą wartość oczekiwaną (<strong>400 000 PLN</strong>) niż wariant D2 (<strong>310 000 PLN</strong>), zgodnie z metodą EMV należy wybrać projekt kas fiskalnych. </p>
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>
