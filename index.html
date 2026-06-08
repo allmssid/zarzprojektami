@@ -64,13 +64,15 @@
       <div class="quiz-panel">
         <div class="quiz-head">
           <p class="pill" id="quizCategory">Quiz</p>
-          <p id="quizCounter">Pytanie 0 / 0</p>
+          <p id="quizCounter" class="quiz-progress-label">Pytanie 0 / 75</p>
+          <p id="quizRemaining">Zostało: 75</p>
           <p id="quizScore">Wynik: 0/0</p>
         </div>
+        <div class="quiz-progress"><div id="quizProgressBar"></div></div>
         <h2 id="quizQuestion">Kliknij start, żeby rozpocząć quiz.</h2>
         <div id="answers" class="answers"></div>
         <div class="controls">
-          <button id="startQuiz">Start / nowe pytanie</button>
+          <button id="startQuiz">Start / następne pytanie</button>
           <button id="explainBtn" class="ghost">Pokaż odpowiedź</button>
         </div>
         <p id="feedback" class="feedback"></p>
