@@ -12,7 +12,7 @@
     <div>
       <p class="eyebrow">Nauka do wykładu</p>
       <h1>Zarządzanie Projektami Informatycznymi</h1>
-      <p class="lead">Interaktywne fiszki, quiz, losowanie pytań i szybka powtórka najważniejszych pojęć — wersja z naniesionymi poprawkami.</p>
+      <p class="lead">Interaktywne fiszki, quiz bez powtórek, licznik postępu, powtórka błędnych odpowiedzi i baza najważniejszych pojęć z naniesionymi zmianami.</p>
     </div>
     <div class="hero-card">
       <span id="cardsCount">0</span>
@@ -27,11 +27,13 @@
       <button class="tab active" data-view="flashcards">Fiszki</button>
       <button class="tab" data-view="quiz">Quiz</button>
       <button class="tab" data-view="list">Baza pytań</button>
+      <button class="tab" data-view="stats">Statystyki</button>
     </nav>
 
     <section class="toolbar">
       <input id="search" type="search" placeholder="Szukaj pojęcia, np. Agile, ryzyko, CPM..." />
       <select id="categoryFilter"><option value="all">Wszystkie działy</option></select>
+      <label class="check"><input id="unknownOnly" type="checkbox" /> Tylko nieoznaczone</label>
       <button id="shuffleBtn">Losuj</button>
       <button id="resetBtn" class="ghost">Reset progresu</button>
     </section>
@@ -54,6 +56,7 @@
       </div>
       <div class="controls">
         <button id="prevCard">← Poprzednia</button>
+        <button id="dontKnowBtn" class="ghost">Nie umiem</button>
         <button id="knowBtn" class="success">Umiem</button>
         <button id="nextCard">Następna →</button>
       </div>
@@ -64,15 +67,16 @@
       <div class="quiz-panel">
         <div class="quiz-head">
           <p class="pill" id="quizCategory">Quiz</p>
-          <p id="quizCounter" class="quiz-progress-label">Pytanie 0 / 75</p>
-          <p id="quizRemaining">Zostało: 75</p>
+          <p id="quizCounter" class="quiz-progress-label">Pytanie 0 / 0</p>
+          <p id="quizRemaining">Zostało: 0</p>
           <p id="quizScore">Wynik: 0/0</p>
         </div>
         <div class="quiz-progress"><div id="quizProgressBar"></div></div>
         <h2 id="quizQuestion">Kliknij start, żeby rozpocząć quiz.</h2>
         <div id="answers" class="answers"></div>
         <div class="controls">
-          <button id="startQuiz">Start / następne pytanie</button>
+          <button id="startQuiz">Start quizu</button>
+          <button id="wrongQuiz" class="ghost">Powtórz błędne</button>
           <button id="explainBtn" class="ghost">Pokaż odpowiedź</button>
         </div>
         <p id="feedback" class="feedback"></p>
@@ -82,10 +86,17 @@
     <section id="list" class="view">
       <div id="cardsList" class="cards-list"></div>
     </section>
+
+    <section id="stats" class="view">
+      <div class="quiz-panel">
+        <h2>Statystyki kategorii</h2>
+        <div id="categoryStats" class="stats-list"></div>
+      </div>
+    </section>
   </main>
 
   <footer>
-    <p>Tip: spacja odwraca fiszkę, strzałki przełączają pytania.</p>
+    <p>Tip: spacja odwraca fiszkę, strzałki przełączają fiszki. Strona działa statycznie na GitHub Pages.</p>
   </footer>
   <script src="script.js"></script>
 </body>
